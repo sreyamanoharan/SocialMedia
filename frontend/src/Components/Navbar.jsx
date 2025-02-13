@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom';
 
 
 
@@ -42,7 +43,7 @@ export default function Navbar() {
                 aria-haspopup="true"
                 color="inherit"
               >
-                  <AddIcon/>
+                  <Link to={'/add-post'}><AddIcon/></Link>
               </IconButton>
            
         </Toolbar>

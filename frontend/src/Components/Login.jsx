@@ -23,6 +23,8 @@ const handleSubmit=(e)=>{
    
   Axios.post('/login',{email,password}).then((res)=>{
     console.log(res.data.message,'jjjjjjjjj');
+    console.log(res.data.user_id);
+    localStorage.setItem('userId',res.data.user_id)
     navigate('/feed')
     
   })

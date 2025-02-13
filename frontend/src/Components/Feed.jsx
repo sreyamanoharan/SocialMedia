@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,51 +12,60 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from "@mui/icons-material/Comment";
 import Navbar from './Navbar';
+import Axios from '../axios';
 
 
 
       
 const Feed = () => {
 
+  const [data,setData]=useState([])
+
+  useEffect(()=>{
+  Axios.get('/get-posts').then((res)=>{
+    console.log(res.data.result);
+    setData(res.data.result)
+    
+  })
+  },[])
+
       
     
   return (
     <div style={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-      <Navbar/>
-        <Card sx={{ maxWidth: 390 ,marginTop:'25px'}}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+  <Navbar/>
+      {data?.map((dat)=>(
     
-        title="user name"
-       
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="comments">
-        <CommentIcon />
-        </IconButton>
-      </CardActions>
+    <Card sx={{ maxWidth: 450 ,marginTop:'25px'}}>
+    <CardHeader
+      title={dat.user_name}
      
-    </Card>
+    />
+    <CardMedia
+      component="img"
+      height="194"
+      image={dat?.images[0]}
+      alt="Paella dish"
+    />
+    <CardContent>
+      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+      {dat.caption}
+      </Typography>
+    </CardContent>
+    <CardActions disableSpacing>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon />
+        <p>{dat.likes}</p>
+      </IconButton>
+      <IconButton aria-label="comments">
+      <CommentIcon />
+      <p>{dat.comments}</p>
+      </IconButton>
+    </CardActions>
+   
+  </Card>
+      ))}
+
     </div>
   )
 }
